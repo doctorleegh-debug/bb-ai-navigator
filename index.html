@@ -23,13 +23,13 @@ main{max-width:1200px;margin:auto;padding:50px 32px 32px}.hero{display:flex;just
 <header class="top"><div class="top-inner"><div class="brand"><span class="mark" aria-hidden="true">B</span> BEAUTY BLOSSOM</div><span class="top-note">업무 링크를 한곳에 · 관리자 네비게이터</span></div></header>
 <main>
 <section class="hero"><div><p class="eyebrow">AI WORKSPACE</p><h1>AI 업무자동화 네비게이터</h1><p class="intro">흩어진 업무 링크, 이제 한곳에서 확인하세요.</p></div><button class="share" id="share">↗ 네비게이터 주소 복사</button></section>
-<nav class="tabs" role="tablist" aria-label="업무 분류"><button class="tab" id="tab-chat" role="tab" aria-selected="true" aria-controls="panel-chat" tabindex="0" data-tab="chat">채팅상담<span class="count">4</span></button><button class="tab" id="tab-reviews" role="tab" aria-selected="false" aria-controls="panel-reviews" tabindex="-1" data-tab="reviews">리뷰답글<span class="soon">준비 중</span></button></nav>
+<nav class="tabs" role="tablist" aria-label="업무 분류"><button class="tab" id="tab-chat" role="tab" aria-selected="true" aria-controls="panel-chat" tabindex="0" data-tab="chat">채팅상담<span class="count">4</span></button><button class="tab" id="tab-reviews" role="tab" aria-selected="false" aria-controls="panel-reviews" tabindex="-1" data-tab="reviews">리뷰답글<span class="count">3</span></button></nav>
 <section id="panel-chat" role="tabpanel" aria-labelledby="tab-chat">
 <div class="toolbar"><div><h2>채팅상담</h2><p class="section-desc">상담 확인부터 테스트·예약요청까지 한눈에.</p></div><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="업무 링크 검색" aria-label="채팅상담 링크 검색"></label></div>
 <div id="cards" class="grid"></div><div id="no-results" class="empty" hidden><h3>검색 결과가 없어요</h3><p>다른 이름으로 검색해 주세요.</p></div>
 <div class="note"><span aria-hidden="true">↗</span><span>각 링크는 새 탭에서 열립니다. 구글 시트와 파트너센터는 기존 계정 로그인 및 접근 권한이 필요합니다.</span></div>
 </section>
-<section id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" hidden><div class="toolbar"><div><h2>리뷰답글</h2><p class="section-desc">플랫폼별 리뷰답글 업무를 모을 공간입니다.</p></div></div><div class="empty"><div class="empty-symbol" aria-hidden="true">＋</div><h3>리뷰답글 링크 추가 예정</h3><p>링크가 등록되면 이 탭에서 확인할 수 있어요.</p></div></section>
+<section id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" hidden><div class="toolbar"><div><h2>리뷰답글</h2><p class="section-desc">업무 현황부터 답글 관리·워커규칙까지 한곳에서.</p></div><label class="search"><span aria-hidden="true">⌕</span><input id="search-reviews" type="search" placeholder="업무 링크 검색" aria-label="리뷰답글 링크 검색"></label></div><div id="review-cards" class="grid"></div><div id="no-review-results" class="empty" hidden><h3>검색 결과가 없어요</h3><p>다른 이름으로 검색해 주세요.</p></div><div class="note"><span aria-hidden="true">↗</span><span>각 링크는 새 탭에서 열립니다. 구글 시트는 기존 계정 로그인 및 접근 권한이 필요합니다.</span></div></section>
 <noscript><p>링크 목록과 업무 탭을 표시하려면 JavaScript를 활성화해 주세요.</p></noscript>
 <footer><span>BEAUTY BLOSSOM · AI 업무자동화 네비게이터</span><span>업무별 바로가기 모음</span></footer>
 </main><div id="toast" class="toast" role="status" hidden></div>
@@ -38,16 +38,21 @@ main{max-width:1200px;margin:auto;padding:50px 32px 32px}.hero{display:flex;just
 // 업무를 추가할 때 이 목록과 해당 탭을 함께 갱신합니다. 서비스 데이터는 수집하지 않습니다.
 const links=[
 {id:'supervision',title:'상담 품질 감독',description:'채팅상담 검토 결과와 상담별 확인 사항을 살펴봅니다.',type:'검토 대시보드',icon:'chart',url:'https://doctorleegh-debug.github.io/bb-chat-supervision/'},
-{id:'test',title:'모의상담 테스트',description:'2026 뷰티블라썸 모의상담 테스트 시트를 엽니다.',type:'Google Sheets',icon:'sheet',url:'https://docs.google.com/spreadsheets/d/1YvOELbPG2bLrqBnIlf1rXDcpAdtytAgJeDaYcPk5BQs/edit'},
+{id:'test',title:'모의상담 테스트',description:'2026 뷰티블라썸 모의상담 테스트 시트를 엽니다.',type:'Google Sheets',icon:'sheet',url:'https://docs.google.com/spreadsheets/d/1YvOELbPG2bLrqBnIlf1rXDcpAdtytAgJeDaYcPk5BQs/edit?usp=drivesdk'},
 {id:'reservations',title:'예약요청 확인',description:'뷰티블라썸 예약요청 비공개 시트를 엽니다.',type:'Google Sheets · 권한 필요',icon:'calendar',url:'https://docs.google.com/spreadsheets/d/1PxEloTcMMjGGjm4OH9pNlIfTWT7unubhDGskELbnyUk/edit?gid=0#gid=0'},
 {id:'gangnamunni',title:'강남언니 채팅창',description:'강남언니 파트너센터의 채팅상담 화면으로 이동합니다.',type:'파트너센터 · 로그인',icon:'chat',url:'https://partner.gangnamunni.com/chats-new?channelUrl=3LdHRgmXH5IY9WMTBfjygiJNG3A'}
 ];
+links.push(
+{id:'review-dashboard',group:'reviews',title:'업무 대시보드',description:'리뷰답글 업무 현황을 대시보드에서 확인합니다.',type:'리뷰답글 대시보드',icon:'chart',url:'https://doctorleegh-debug.github.io/beauty-review-dashboard/'},
+{id:'review-sheet',group:'reviews',title:'플랫폼별 리뷰 답글 관리',description:'2026 플랫폼별 리뷰 답글 관리 시트를 엽니다.',type:'Google Sheets',icon:'sheet',url:'https://docs.google.com/spreadsheets/d/1qcc8B-DCMiTd5d2Gc3jAC0KSxw26qEw4FvsDJYW-Z04/edit?usp=drivesdk'},
+{id:'worker-rules',group:'reviews',title:'워커규칙',description:'리뷰답글 업무에 사용하는 워커규칙 시트를 엽니다.',type:'Google Sheets · 업무 규칙',icon:'sheet',url:'https://docs.google.com/spreadsheets/d/1T80DeQJgfzY5OLKcBjlY95SekU47O1BN3jz-SKpqGtg/edit?usp=drivesdk'}
+);
 const icons={chart:'<path d="M4 4v16h16M8 15v-4m5 4V7m5 8v-6"/>',sheet:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h8m-4-8v8"/>',calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-14 4h3m4 0h3"/>',chat:'<path d="M21 11a8 8 0 0 1-8 8H7l-4 3V11a9 9 0 0 1 18 0Z"/><path d="M7 11h10M7 15h6"/>'};
 const cards=document.getElementById('cards');
 for(const item of links){
-const card=document.createElement('article');card.className='card'+(item.id==='supervision'?' featured':'');card.dataset.search=(item.title+' '+item.description+' '+item.type).toLowerCase();
+const card=document.createElement('article');card.className='card'+((item.id==='supervision'||item.id==='review-dashboard')?' featured':'');card.dataset.search=(item.title+' '+item.description+' '+item.type).toLowerCase();
 const head=document.createElement('div');head.className='card-head';const icon=document.createElement('span');icon.className='icon';icon.setAttribute('aria-hidden','true');icon.innerHTML='<svg viewBox="0 0 24 24">'+icons[item.icon]+'</svg>';const tag=document.createElement('span');tag.className='tag';tag.textContent=item.type;head.append(icon,tag);
-const title=document.createElement('h3');title.textContent=item.title;const desc=document.createElement('p');desc.textContent=item.description;const actions=document.createElement('div');actions.className='card-actions';const open=document.createElement('a');open.className='open';open.href=item.url;open.target='_blank';open.rel='noopener noreferrer';open.setAttribute('aria-label',item.title+' 새 탭에서 열기');open.innerHTML='<span>바로 열기</span><span aria-hidden="true">↗</span>';const copy=document.createElement('button');copy.className='copy';copy.textContent='링크 복사';copy.setAttribute('aria-label',item.title+' 링크 복사');copy.addEventListener('click',()=>copyLink(item.url));actions.append(open,copy);card.append(head,title,desc,actions);cards.append(card);
+const title=document.createElement('h3');title.textContent=item.title;const desc=document.createElement('p');desc.textContent=item.description;const actions=document.createElement('div');actions.className='card-actions';const open=document.createElement('a');open.className='open';open.href=item.url;open.target='_blank';open.rel='noopener noreferrer';open.setAttribute('aria-label',item.title+' 새 탭에서 열기');open.innerHTML='<span>바로 열기</span><span aria-hidden="true">↗</span>';const copy=document.createElement('button');copy.className='copy';copy.textContent='링크 복사';copy.setAttribute('aria-label',item.title+' 링크 복사');copy.addEventListener('click',()=>copyLink(item.url));actions.append(open,copy);card.append(head,title,desc,actions);document.getElementById(item.group==='reviews'?'review-cards':'cards').append(card);
 }
 let toastTimer;async function copyLink(url){try{await navigator.clipboard.writeText(url);const el=document.getElementById('toast');el.textContent='주소를 복사했어요';el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,2400)}catch{const input=document.getElementById('manual-url');input.value=url;document.getElementById('manual').showModal();input.focus();input.select()}}
 document.getElementById('close-dialog').onclick=()=>document.getElementById('manual').close();
@@ -57,4 +62,5 @@ function showTab(){const selected=location.hash==='#reviews'?'reviews':'chat';fo
 tabs.forEach((tab,i)=>{tab.onclick=()=>{location.hash=tab.dataset.tab;showTab()};tab.onkeydown=e=>{let next;if(e.key==='ArrowRight')next=(i+1)%tabs.length;else if(e.key==='ArrowLeft')next=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;else return;e.preventDefault();tabs[next].focus();tabs[next].click()}});
 addEventListener('hashchange',showTab);showTab();
 document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();let visible=0;for(const card of cards.children){card.hidden=!card.dataset.search.includes(q);if(!card.hidden)visible++}document.getElementById('no-results').hidden=visible!==0});
+document.getElementById('search-reviews').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();let visible=0;for(const card of document.getElementById('review-cards').children){card.hidden=!card.dataset.search.includes(q);if(!card.hidden)visible++}document.getElementById('no-review-results').hidden=visible!==0});
 </script></body></html>
